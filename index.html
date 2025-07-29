@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Periksa Kode Kelompok</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #3c1361;
+      color: #2d3436;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background-color: white;
+      border-radius: 20px;
+      padding: 30px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+    button {
+      background-color: #8e44ad;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 10px 5px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.2s ease; /* <-- animasi */
+    }
+
+    button:hover {
+      transform: scale(1.05); /* sedikit membesar saat hover */
+      background-color: #732d91; /* warna lebih gelap */
+    }
+
+    button:active {
+      transform: scale(0.95); /* sedikit mengecil saat diklik */
+      background-color: #5e2b82;
+    }
+
+    button.red {
+      background-color: #e74c3c;
+    }
+
+    button.red:hover {
+      background-color: #c0392b;
+    }
+
+    button.red:active {
+      background-color: #992d22;
+    }
+
+
+    
+
+    select, input[type="text"] {
+      width: 250px;
+      padding: 10px;
+      font-size: 16px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    input[type="text"] {
+      background-color: #ffeaa7;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    table {
+      margin: 20px auto;
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+
+    th {
+      background-color: #8e44ad;
+      color: white;
+    }
+    .judulAtas {
+      position: absolute;
+      top: 100px; /* dari sebelumnya mungkin 30px, ubah ke 80px */
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      color: white;
+      z-index: 999;
+      margin-top: 60px;
+      margin-bottom: -20px; /* dari -40px jadi -20px */
+    }
+
+
+    .judulAtas h1 {
+      font-family: 'Luckiest Guy', cursive;
+      font-size: 42px;
+      margin: 0;
+      color: white;
+    }
+
+    .judulAtas h3 {
+      font-size: 22px;
+      font-weight: normal;
+      margin: 0;
+      color: #ffc107;
+    }
+
+    
+  </style>
+</head>
+  <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
+
+<body>
+  
+  <div class="judulAtas">
+    <h1>JUMPSY CHALLENGE</h1>
+    <h3>MISSION 1: The Code Trail</h3>
+  </div>
+  <div class="container">
+    <!-- Halaman Awal -->
+    <div id="halamanAwal">
+      <h2>Periksa Kode Kelompok</h2>
+      <button onclick="tampilkanForm()">🔍 Cek Kode</button>
+      <button onclick="toggleTabel()">📋 Lihat Kelompok yang Sudah Submit</button>
+    </div>
+
+    <!-- Halaman Form -->
+    <div id="halamanForm" class="hidden">
+      <h2>Periksa Kode Kelompok</h2>
+      <select id="kelompok">
+        <option value="">-- Pilih Kelompok --</option>
+        <option value="1">Kelompok 1</option>
+        <option value="2">Kelompok 2</option>
+        <option value="3">Kelompok 3</option>
+        <option value="3">Kelompok 4</option>
+        <option value="1">Kelompok 5</option>
+        <option value="2">Kelompok 6</option>
+        <option value="3">Kelompok 7</option>
+        <option value="3">Kelompok 8</option>
+        <option value="1">Kelompok 9</option>
+        <option value="2">Kelompok 10</option>
+        <option value="3">Kelompok 11</option>
+        <option value="3">Kelompok 12</option>
+        <option value="1">Kelompok 13</option>
+        <option value="2">Kelompok 14</option>
+        <option value="3">Kelompok 15</option>
+        <option value="3">Kelompok 16</option>
+      <br />
+      <input type="text" id="kode" placeholder="Contoh: ASDFG" />
+      <br />
+      <button onclick="periksaKode()">Submit Kode</button>
+      <button class="red" onclick="kembali()">← Kembali</button>
+    </div>
+
+    <!-- Tabel Submit -->
+    <div id="tabelKelompok" class="hidden">
+      <h2>Kelompok yang Sudah Submit</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Kelompok</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="daftarSubmit"></tbody>
+      </table>
+      <button class="red" onclick="resetTabel()">Reset</button>
+    </div>
+  </div>
+
+  <script>
+    const kodeKelompok = {
+      "1": "JAFSD",
+      "2": "FASDJ",
+      "3": "SDJAF",
+      "4": "ASDFJ",
+      "5": "DJFAS",
+      "6": "JDSAF",
+      "7": "SFJDA",
+      "8": "FJADS",
+      "9": "DSJFA",
+      "10": "AFDSJ",
+      "11": "SJADF",
+      "12": "FAJSD",
+      "13": "JASFD",
+      "14": "DASFJ",
+      "15": "SDAFJ",
+      "16": "JFDSA"
+    };
+
+
+    const submitData = [];
+
+    function tampilkanForm() {
+      document.getElementById("halamanAwal").classList.add("hidden");
+      document.getElementById("halamanForm").classList.remove("hidden");
+    }
+
+    function kembali() {
+      document.getElementById("halamanForm").classList.add("hidden");
+      document.getElementById("halamanAwal").classList.remove("hidden");
+    }
+
+    function periksaKode() {
+      const kelompok = document.getElementById("kelompok").value;
+      const kode = document.getElementById("kode").value.trim().toUpperCase();
+
+      if (!kelompok || !kode) {
+        alert("Isi semua data terlebih dahulu!");
+        return;
+      }
+
+      if (kode === kodeKelompok[kelompok]) {
+        if (!submitData.includes(kelompok)) {
+          submitData.push(kelompok);
+        }
+        alert("✅ Kode Benar! Kelompok berhasil submit.");
+        kembali();
+      } else {
+        alert("❌ Kode Salah!");
+      }
+    }
+
+    function toggleTabel() {
+      const el = document.getElementById("tabelKelompok");
+      if (el.classList.contains("hidden")) {
+        el.classList.remove("hidden");
+        tampilkanTabel();
+      } else {
+        el.classList.add("hidden");
+      }
+    }
+
+    function tampilkanTabel() {
+      const tbody = document.getElementById("daftarSubmit");
+      tbody.innerHTML = "";
+      submitData.forEach(k => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td>Kelompok ${k}</td><td>✅</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function resetTabel() {
+      if (confirm("Yakin ingin reset data?")) {
+        submitData.length = 0;
+        tampilkanTabel();
+      }
+    }
+  </script>
+</body>
+</html>
